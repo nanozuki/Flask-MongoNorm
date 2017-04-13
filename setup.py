@@ -4,7 +4,7 @@ Flask-MongoNorm
 
 MongoNorm support for Flask applications.
 """
-from setuptools import find_packages, setup
+from setuptools import setup
 
 setup(
     name='Flask-MongoNorm',
@@ -18,6 +18,7 @@ setup(
     platforms='any',
     packages=['flask_mongonorm'],
     install_requires=[
+        'Flask(>=0.10)',
         'MongoNorm(>=2.0)'
     ],
     classifiers=[
