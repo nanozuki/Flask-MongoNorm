@@ -1,4 +1,5 @@
 from flask import abort
+from mongonorm.database import Database as OrigDatabase
 from mongonorm import document
 
 
@@ -9,13 +10,7 @@ def find_one_or_404(cls, filter_=None, *args, **kwargs):
     return cls._boxing(obj)
 
 
-class DataBase(object):
-    def __init__(self, orig_database):
-        self.orig_database = orig_database
-
-    def __getattr__(self, name):
-        return getattr(self.orig_database, name)
-
+class DataBase(OrigDatabase):
     def collection(self, name):
         collection = self.orig_database[name]
 

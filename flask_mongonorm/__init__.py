@@ -1,2 +1,1 @@
-def first_step():
-    return "Hello, world!"
+from .mongo_client import MongoClient

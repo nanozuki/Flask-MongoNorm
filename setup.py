@@ -19,7 +19,8 @@ setup(
     packages=['flask_mongonorm'],
     install_requires=[
         'Flask(>=0.10)',
-        'MongoNorm(>=2.0)'
+        'MongoNorm(>=2.0)',
+        'PyMongo(>=3.0)'
     ],
     classifiers=[
         'Development Status :: 1 - Planning',
