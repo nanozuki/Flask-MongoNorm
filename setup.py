@@ -8,7 +8,7 @@ from setuptools import setup
 
 setup(
     name='Flask-MongoNorm',
-    version='0.0.1',
+    version='0.1.0',
     url='https://github.com/CrowsT/Flask-MongoNorm',
     license='BSD',
     author='Crows',
@@ -23,7 +23,7 @@ setup(
         'PyMongo(>=3.0)'
     ],
     classifiers=[
-        'Development Status :: 1 - Planning',
+        'Development Status :: 2 - Pre Alpha',
         'Environment :: Web Environment',
         'Intended Audience :: Developers',
         'License :: OSI Approved :: BSD License',
