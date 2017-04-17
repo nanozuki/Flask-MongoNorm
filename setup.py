@@ -15,6 +15,7 @@ setup(
     author_email='pt.wenhan@gmail.com',
     description='MongoNorm support for Flask applications',
     long_description=__doc__,
+    zip_safe=False,
     platforms='any',
     packages=['flask_mongonorm'],
     install_requires=[
@@ -22,6 +23,8 @@ setup(
         'MongoNorm(>=2.0)',
         'PyMongo(>=3.0)'
     ],
+    setup_requires=['pytest-runner'],
+    tests_require=['pytest'],
     classifiers=[
         'Development Status :: 2 - Pre-Alpha',
         'Environment :: Web Environment',

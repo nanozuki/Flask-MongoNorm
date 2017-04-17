@@ -10,14 +10,13 @@ def find_one_or_404(cls, filter_=None, *args, **kwargs):
     return cls._boxing(obj)
 
 
-class DataBase(OrigDatabase):
+class Database(OrigDatabase):
     def collection(self, name):
-        collection = self.orig_database[name]
+        collection = self.get_collection(name)
 
         def decorator(cls):
             cls.__collection__ = collection
-            setattr(cls, 'find_one_or_404',
-                    classmethod(getattr(document, 'find_one_or_404')))
+            setattr(cls, 'find_one_or_404', classmethod(find_one_or_404))
             for method in document.property_methods:
                 setattr(cls, method, property(getattr(document, method)))
             for method in document.class_methods:

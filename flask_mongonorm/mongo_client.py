@@ -6,31 +6,37 @@ from mongonorm.database import Database as OrigDatabase
 from flask_mongonorm.database import Database
 
 
-class MongoClient(object):
+class MongoNorm(object):
     def __init__(self, app=None):
         self.app = app
-        if self.app is not None:
+        self._client = None
+        if app is not None:
             self.init_app(app)
 
     def init_app(self, app):
         app.config.setdefault("MONGONORM_URI", "mongodb://localhost:27017/")
+        app.config.setdefault("MONGONORM_DB", "test")
+        app.extensions['MongoNorm_client'] = OrigMongoClient(
+            app.config['MONGONORM_URI'])
         app.teardown_appcontext(self.teardown)
 
-    def mongo_client(self):
-        return OrigMongoClient(current_app.config['MONGONORM_URI'])
+    def get_app(self):
+        if current_app:
+            return current_app
+        if self.app is not None:
+            return self.app
+
+        raise RuntimeError('Application not registered on MongoNorm'
+                           ' and no application bound to current context')
+
+    @property
+    def client(self):
+        return self.get_app().extensions['MongoNorm_client']
 
     def teardown(self, exception):
         ctx = stack.top
         if hasattr(ctx, 'mongonorm_client'):
             ctx.mongonorm_client.close()
-
-    @property
-    def client(self):
-        ctx = stack.top
-        if ctx is not None:
-            if not hasattr(ctx, 'mongonorm_client'):
-                ctx.mongonorm_client = self.mongo_client()
-            return ctx.mongonorm_client
 
     def __getattr__(self, name):
         attr = getattr(self.client, name)
