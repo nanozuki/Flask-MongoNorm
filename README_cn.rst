@@ -8,9 +8,9 @@ MongoNorm support for Flask applications.
 安装
 ----
 
-Use pip to install::
+使用pip安装::
 
-    pip install MongoNorm
+    pip install Flask-MongoNorm
 
 使用
 ----

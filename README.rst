@@ -10,7 +10,7 @@ installation
 
 Use pip to install::
 
-    pip install MongoNorm
+    pip install Flask-MongoNorm
 
 Use guide
 ---------
