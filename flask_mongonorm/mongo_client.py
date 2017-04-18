@@ -1,13 +1,13 @@
 from flask import current_app
-from flask import _app_ctx_stack as stack
+from mongonorm.mongo_client import MongoClient as NormClient,\
+    OrigMongoClient, OrigClientFactory
 
-from mongonorm import MongoClient as OrigMongoClient
-from mongonorm.database import Database as OrigDatabase
-from flask_mongonorm.database import Database
+from .database import Database
 
 
-class MongoNorm(object):
+class MongoClient(NormClient):
     def __init__(self, app=None):
+        super().__init__()
         self.app = app
         self._client = None
         if app is not None:
@@ -15,37 +15,25 @@ class MongoNorm(object):
 
     def init_app(self, app):
         app.config.setdefault("MONGONORM_URI", "mongodb://localhost:27017/")
-        app.config.setdefault("MONGONORM_DB", "test")
-        app.extensions['MongoNorm_client'] = OrigMongoClient(
-            app.config['MONGONORM_URI'])
+        app.extensions['MongoNorm_client'] = None
         app.teardown_appcontext(self.teardown)
 
-    def get_app(self):
-        if current_app:
-            return current_app
-        if self.app is not None:
-            return self.app
-
-        raise RuntimeError('Application not registered on MongoNorm'
-                           ' and no application bound to current context')
-
     @property
-    def client(self):
-        return self.get_app().extensions['MongoNorm_client']
+    def o_client(self):
+        if current_app.extensions['MongoNorm_client'] is None:
+            current_app.extensions['MongoNorm_client'] = OrigClientFactory(
+                current_app.config['MONGONORM_URI']).make()
+        return current_app.extensions['MongoNorm_client']
 
     def teardown(self, exception):
-        ctx = stack.top
-        if hasattr(ctx, 'mongonorm_client'):
-            ctx.mongonorm_client.close()
+        if current_app.extensions['MongoNorm_client'] is not None:
+            current_app.extensions['MongoNorm_client'].close()
 
     def __getattr__(self, name):
-        attr = getattr(self.client, name)
-        if isinstance(attr, OrigDatabase) is True:
-            return Database(self.client, name)
-        return attr
+        if name in OrigMongoClient.__dict__:
+            return self.o_client.__getattr__(name)
+        else:
+            return Database(self, name)
 
     def __getitem__(self, item):
-        item_ = getattr(self.client, item)
-        if isinstance(item_, OrigDatabase) is True:
-            return Database(self.client, item)
-        return item_
+        return Database(self, item)

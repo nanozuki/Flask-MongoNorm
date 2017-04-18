@@ -8,7 +8,7 @@ from setuptools import setup
 
 setup(
     name='Flask-MongoNorm',
-    version='0.1.0',
+    version='0.2.0',
     url='https://github.com/CrowsT/Flask-MongoNorm',
     license='BSD',
     author='Crows',
@@ -20,13 +20,13 @@ setup(
     packages=['flask_mongonorm'],
     install_requires=[
         'Flask(>=0.10)',
-        'MongoNorm(>=2.0)',
+        'MongoNorm(>=0.4.0)',
         'PyMongo(>=3.0)'
     ],
     setup_requires=['pytest-runner'],
     tests_require=['pytest'],
     classifiers=[
-        'Development Status :: 2 - Pre-Alpha',
+        'Development Status :: 3 - Alpha',
         'Environment :: Web Environment',
         'Intended Audience :: Developers',
         'License :: OSI Approved :: BSD License',

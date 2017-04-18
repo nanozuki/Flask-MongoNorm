@@ -1,17 +1,19 @@
 #!/usr/bin/env python
 from flask import Flask, jsonify
-from flask_mongonorm import MongoNorm, BSONEncoder
+from flask_mongonorm import MongoClient, BSONEncoder
 
 
 app = Flask(__name__)
 app.config['MONGONORM_URI'] = "mongodb://localhost:27017/"
+app.config['DEBUG'] = True
 app.json_encoder = BSONEncoder
 
 
-mongo = MongoNorm()
+mongo = MongoClient()
+db = mongo.test
 
 
-@mongo.test.collection('test')
+@db.collection('test')
 class TheModel(object):
     def __init__(self, n):
         self.insert({'test_id': n})

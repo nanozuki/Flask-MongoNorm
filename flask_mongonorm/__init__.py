@@ -2,7 +2,7 @@ from bson import ObjectId
 from datetime import datetime
 import json
 
-from .mongo_client import MongoNorm
+from .mongo_client import MongoClient
 
 
 class BSONEncoder(json.JSONEncoder):
