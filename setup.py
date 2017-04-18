@@ -1,14 +1,21 @@
 """
 Flask-MongoNorm
--------------
+---------------
 
 MongoNorm support for Flask applications.
+
+installation
+------------
+
+Use pip to install::
+
+    pip install MongoNorm
 """
 from setuptools import setup
 
 setup(
     name='Flask-MongoNorm',
-    version='0.2.0',
+    version='0.2.1',
     url='https://github.com/CrowsT/Flask-MongoNorm',
     license='BSD',
     author='Crows',
